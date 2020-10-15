@@ -2,9 +2,14 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {}
+index = {"get_arxiv_pdf_url": "00_core.ipynb",
+         "download_file": "00_core.ipynb",
+         "is_url": "00_core.ipynb",
+         "TargetType": "00_core.ipynb",
+         "Target": "00_core.ipynb"}
 
-modules = []
+modules = ["core.py",
+           "utils.py"]
 
 doc_url = "https://fastai.github.io/send_to_pb/"
 

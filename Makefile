@@ -11,6 +11,9 @@ test:
 	#   RUNNING TESTS                   #
 	#####################################
 	nbdev_test_nbs --timing true
+    
+test_slow:
+	nbdev_test_nbs --flags 'slow|integration' --timing true 
 
 release: pypi
 	nbdev_bump_version

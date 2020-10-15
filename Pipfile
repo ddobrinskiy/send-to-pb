@@ -11,6 +11,8 @@ ipykernel = "*"
 requests = "*"
 beautifulsoup4 = "*"
 fastcore = "*"
+tqdm = "*"
+loguru = "*"
 
 [requires]
 python_version = "3.7"
