@@ -87,7 +87,6 @@ class Target:
         self.type = self.get_type(input_str)
 
         self.validate()
-        self.fetch_target()
 
     def get_type(self, s:str) -> TargetType:
         if is_url(s):
@@ -119,6 +118,8 @@ class Target:
 
             dest = dest_dir/title
             download_file(url_pdf, dest)
+            self.fetched_path = dest
+            return dest
 
         else:
             raise NotImplementedError(f"{self.type.name} targets")
