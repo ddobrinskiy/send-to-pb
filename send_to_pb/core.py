@@ -126,7 +126,6 @@ class Target:
 
             self.fetched_path = dest
             return dest
-
         else:
             raise NotImplementedError(f"{self.type.name} targets")
 
