@@ -6,10 +6,14 @@ index = {"get_arxiv_pdf_url": "00_core.ipynb",
          "download_file": "00_core.ipynb",
          "is_url": "00_core.ipynb",
          "TargetType": "00_core.ipynb",
-         "Target": "00_core.ipynb"}
+         "Target": "00_core.ipynb",
+         "MessageEncoded": "01_mail.ipynb",
+         "SCOPES": "01_mail.ipynb",
+         "Emailer": "01_mail.ipynb"}
 
 modules = ["core.py",
-           "utils.py"]
+           "utils.py",
+           "mail.py"]
 
 doc_url = "https://fastai.github.io/send_to_pb/"
 
