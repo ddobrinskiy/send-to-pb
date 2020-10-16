@@ -15,7 +15,7 @@ from .mail import Emailer
 @click.argument('location', nargs=1)
 @click.option('--send-mail/--no-mail', default=False, help="send email or not?")
 @click.option('--myself/--pocketbook', default=True, help="send to myself or pocketbook?")
-def send_to_pocketbook(location,  send_mail, myself,):
+def send_to_pocketbook(location,  send_mail, myself):
     """Send file from location to pocketbook"""
     if myself:
         receiver = "david.dobrinskiy@gmail.com"

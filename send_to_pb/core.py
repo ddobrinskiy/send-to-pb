@@ -117,7 +117,13 @@ class Target:
                 dest_dir.mkdir(exist_ok=True)
 
             dest = dest_dir/title
-            download_file(url_pdf, dest)
+            if dest.is_file():
+                # file exists already
+                u.logger.info(f"File already exists, skipping download {dest}")
+            else:
+                # file does not exist, let's download it
+                download_file(url_pdf, dest)
+
             self.fetched_path = dest
             return dest
 
