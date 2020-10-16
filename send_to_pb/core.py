@@ -19,11 +19,10 @@ from send_to_pb import utils as u
 def get_arxiv_pdf_url(url) -> (str, str):
     url = url.strip('/')
     if urlparse(url).path.startswith("/pdf/"):
-        title = url.split('/')[-1]
-        if not title.endswith('.pdf'):
-            title += '.pdf'
-        return url, title
-    elif urlparse(url).path.startswith("/abs/"):
+        u.logger.debug("Direct pdf link to ARXIV detected, replatincg to /abs/")
+        url = url.replace("/pdf/", "/abs/")
+
+    if urlparse(url).path.startswith("/abs/"):
         u.logger.debug(f"Getting ARXIV link to parse {url}")
         content = fastcore.utils.urlread(url)
         u.logger.debug("OK")
@@ -101,6 +100,7 @@ class Target:
             elif pathlib.Path(s).is_dir():
                 return TargetType.LOCAL_DIR
             else:
+                u.logger.warning(f"Can't find {s}")
                 return TargetType.NOT_FOUND
 
     def validate(self):
