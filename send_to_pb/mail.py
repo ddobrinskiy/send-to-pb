@@ -38,8 +38,9 @@ SCOPES = [
 @dataclass
 class MessageEncoded:
     raw: str
+    to: str
 
-    def dict(self):
+    def json(self):
         return {"raw": self.raw}
 
 # Cell
@@ -49,15 +50,23 @@ class Emailer:
         self.service = self.g_auth()
 
     def g_auth(self):
-        """Shows basic usage of the Gmail API.
-        Lists the user's Gmail labels.
+        """authorise in Google using creds
         """
+        creds_location = pathlib.Path('~/credentials/gmail_api_creds.json') \
+                                .expanduser()
+        token_dir = pathlib.Path('~/.tokens') \
+                                .expanduser()
+        if not token_dir.exists():
+            token_dir.mkdir()
+        token_location = token_dir/'gmail_api_token.pickle'
+
+
         creds = None
         # The file token.pickle stores the user's access and refresh tokens, and is
         # created automatically when the authorization flow completes for the first
         # time.
-        if os.path.exists('token.pickle'):
-            with open('token.pickle', 'rb') as token:
+        if token_location.exists():
+            with open(token_location, 'rb') as token:
                 creds = pickle.load(token)
         # If there are no (valid) credentials available, let the user log in.
         if not creds or not creds.valid:
@@ -65,11 +74,11 @@ class Emailer:
                 creds.refresh(Request())
             else:
                 flow = InstalledAppFlow.from_client_secrets_file(
-                    pathlib.Path('~/credentials/gmail_api_creds.json').expanduser(),
+                    creds_location,
                     SCOPES)
                 creds = flow.run_local_server(port=0)
             # Save the credentials for the next run
-            with open('token.pickle', 'wb') as token:
+            with open(token_location, 'wb') as token:
                 pickle.dump(creds, token)
 
         service = build('gmail', 'v1', credentials=creds)
@@ -136,7 +145,7 @@ class Emailer:
         message_as_base64 = base64.urlsafe_b64encode(message_as_bytes) #encode in base64 (printable letters coding)
 
         raw = message_as_base64.decode()  # need to JSON serializable (no idea what does it means)
-        return MessageEncoded(raw)
+        return MessageEncoded(raw=raw, to=to)
 
 
     def _send_message(self, content:MessageEncoded, user_id:Optional[str]=''):
@@ -144,15 +153,13 @@ class Emailer:
             user_id = 'david.dobrinskiy@gmail.com'
 
         try:
-            body = {"raw": content.raw}
             gmail_message = (self.service
                              .users()
                              .messages()
-                             .send(userId=user_id, body=body)
+                             .send(userId=user_id, body=content.json())
                              )
             gmail_message.execute()
-
-            u.logger.info(f"Gmail message sent as {user_id}")
+            u.logger.info(f"Gmail message sent to {content.to}")
             return gmail_message
         except Exception as e:
             u.logger.error(f'An error occurred: {e}')

@@ -9,11 +9,13 @@ index = {"get_arxiv_pdf_url": "00_core.ipynb",
          "Target": "00_core.ipynb",
          "MessageEncoded": "01_mail.ipynb",
          "SCOPES": "01_mail.ipynb",
-         "Emailer": "01_mail.ipynb"}
+         "Emailer": "01_mail.ipynb",
+         "send_to_pocketbook": "02_cli.ipynb"}
 
 modules = ["core.py",
            "utils.py",
-           "mail.py"]
+           "mail.py",
+           "cli.py"]
 
 doc_url = "https://fastai.github.io/send_to_pb/"
 
