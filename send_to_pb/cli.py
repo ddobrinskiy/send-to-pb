@@ -13,11 +13,20 @@ from .mail import Emailer
 
 @click.command()
 @click.argument('location', nargs=1)
-def send_to_pocketbook(location):
+@click.option('--send-mail/--no-mail', default=False, help="send email or not?")
+@click.option('--myself/--pocketbook', default=True, help="send to myself or pocketbook?")
+def send_to_pocketbook(location,  send_mail, myself,):
     """Send file from location to pocketbook"""
+    if myself:
+        receiver = "david.dobrinskiy@gmail.com"
+    else:
+        receiver = "dzlob@pbsync.com"
+
     t = Target(location)
     t.fetch_target()
-    Emailer().send_file(to="david.dobrinskiy@gmail.com",
-                        file=t.fetched_path,
-                 )
+
+    if send_mail:
+        Emailer().send_file(to=receiver,
+                            file=t.fetched_path,
+                     )
 
