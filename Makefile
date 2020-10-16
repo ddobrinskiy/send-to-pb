@@ -6,14 +6,14 @@ build: $(SRC)
 	#####################################
 	nbdev_build_lib
 
-test:
+test_fast:
 	#####################################
 	#   RUNNING TESTS                   #
 	#####################################
-	nbdev_test_nbs --timing true
+	nbdev_test_nbs
     
 test_slow:
-	nbdev_test_nbs --flags 'slow|integration' --timing true 
+	nbdev_test_nbs --flags 'slow integration' --timing true
 
 release: pypi
 	nbdev_bump_version
@@ -34,7 +34,7 @@ clean:
 
 all:
 	make build
-	make test
+	make test_fast
 	make clean
 	#####################################
 	#    SHOWING GIT STATUS             #

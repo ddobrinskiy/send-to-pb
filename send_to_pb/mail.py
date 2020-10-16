@@ -76,7 +76,7 @@ class Emailer:
         return service
 
 
-    def create_message_with_attachment(self,
+    def _create_message_with_attachment(self,
                                        file:pathlib.Path,
                                        message_text:str = '',
                                        sender:str="David",
@@ -139,7 +139,7 @@ class Emailer:
         return MessageEncoded(raw)
 
 
-    def send_message(self, content:MessageEncoded, user_id:Optional[str]=''):
+    def _send_message(self, content:MessageEncoded, user_id:Optional[str]=''):
         if user_id == '':
             user_id = 'david.dobrinskiy@gmail.com'
 
@@ -157,3 +157,15 @@ class Emailer:
         except Exception as e:
             u.logger.error(f'An error occurred: {e}')
             return None
+
+    def send_file(self,
+                  file:pathlib.Path,
+                  to:str="dzlob@pbsync.com",
+                  ) -> bool:
+        content = self._create_message_with_attachment(file=file,
+                                                      to=to,
+                                                     )
+        self._send_message(content=content)
+
+        return True
+
