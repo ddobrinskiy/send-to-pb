@@ -87,9 +87,9 @@ class Emailer:
 
     def _create_message_with_attachment(self,
                                        file:pathlib.Path,
+                                       to:str,
                                        message_text:str = '',
                                        sender:str="David",
-                                       to:str="dzlob@pbsync.com",
                                        subject:str="SEND TO PBSYNC",
                                        ) -> MessageEncoded:
 
@@ -159,7 +159,7 @@ class Emailer:
                              .send(userId=user_id, body=content.json())
                              )
             gmail_message.execute()
-            u.logger.info(f"Gmail message sent to {content.to}")
+            u.logger.info(f"Gmail attachment sent to {content.to}")
             return gmail_message
         except Exception as e:
             u.logger.error(f'An error occurred: {e}')
@@ -167,7 +167,7 @@ class Emailer:
 
     def send_file(self,
                   file:pathlib.Path,
-                  to:str="dzlob@pbsync.com",
+                  to:str,
                   ) -> bool:
         content = self._create_message_with_attachment(file=file,
                                                       to=to,

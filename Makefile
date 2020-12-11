@@ -12,7 +12,7 @@ test_fast:
 	#####################################
 	nbdev_test_nbs
     
-test_slow:
+test_integration:
 	nbdev_test_nbs --flags 'slow integration' --timing true
 
 release: pypi
@@ -34,7 +34,7 @@ clean:
 
 all:
 	make build
-	make test_fast
+	make test_integration
 	make clean
 	#####################################
 	#    SHOWING GIT STATUS             #
