@@ -8,6 +8,7 @@ import click
 
 from .core import Target
 from .mail import Emailer
+from send_to_pb import utils as u
 
 # Cell
 
@@ -23,10 +24,8 @@ def send_to_pocketbook(location,  send_mail, pocketbook):
         receiver = "david.dobrinskiy@gmail.com"
 
     t = Target(location)
-    t.fetch_target()
 
     if send_mail:
         Emailer().send_file(to=receiver,
                             file=t.file_path,
                      )
-

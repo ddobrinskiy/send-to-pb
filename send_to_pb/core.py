@@ -84,6 +84,7 @@ class Target:
     def __init__(self, input_str:str):
         self.input = input_str
         self.type = self.get_type(input_str)
+        self.fetch_target()
 
     def get_type(self, s:str) -> TargetType:
         if is_url(s):

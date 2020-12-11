@@ -169,6 +169,16 @@ class Emailer:
                   file:pathlib.Path,
                   to:str,
                   ) -> bool:
+        ## Verify that file is not too big for email
+        MAX_EMAIL_SIZE_MB = 25
+        filesize = file.stat().st_size / 1e6
+        if filesize > MAX_EMAIL_SIZE_MB:
+            msg = f"The file '{file}' is too big for email ({filesize:.2f} mb), use PbCloud instead: https://cloud.pocketbook.digital/"
+            u.logger.error(msg)
+            return
+
+
+
         content = self._create_message_with_attachment(file=file,
                                                       to=to,
                                                      )
