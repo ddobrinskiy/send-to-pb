@@ -179,6 +179,7 @@ class Emailer:
 
 
 
+        u.logger.info(f"gmail: sending {file} ({filesize:.2f} mb) to {to}")
         content = self._create_message_with_attachment(file=file,
                                                       to=to,
                                                      )

@@ -119,15 +119,27 @@ class Target:
                 # file does not exist, let's download it
                 download_file(url_pdf, dest)
 
-            self.file_path = dest
-            return self.file_path
+            self.files = [dest]
+            return self.files
 
         elif self.type == TargetType.LOCAL_FILE:
-            self.file_path = pathlib.Path(self.input)
-            u.logger.info(f"Will send a local file from {self.file_path}")
-            return self.file_path
+            self.files = [pathlib.Path(self.input)]
+            u.logger.info(f"Will send a local file from {self.files[0]}")
+            return self.files
+
+        elif self.type == TargetType.LOCAL_DIR:
+            allowed_file_types = ['epub', 'mobi', 'pdf', 'fb2']
+            dir_ = pathlib.Path(self.input)
+            files = [fp for fp in dir_.rglob('*') if fp.name.split('.')[-1] in allowed_file_types]
+            u.logger.info(f"{len(files)} files found in {dir_}:")
+            for fp in files:
+                u.logger.info(f">> {fp}")
+
+            self.files = files
+            return files
 
         else:
             raise NotImplementedError(f"{self.type.name} targets")
 
-    __repr__ = fastcore.utils.basic_repr('input, type')
+    def __repr__(self):
+        return f"Target(input={self.input}, type={self.type}, nbr_files=#{len(self.files)})"
