@@ -85,8 +85,6 @@ class Target:
         self.input = input_str
         self.type = self.get_type(input_str)
 
-        self.validate()
-
     def get_type(self, s:str) -> TargetType:
         if is_url(s):
             if urlparse(s).netloc == 'arxiv.org':
@@ -102,10 +100,6 @@ class Target:
             else:
                 u.logger.warning(f"Can't find {s}")
                 return TargetType.NOT_FOUND
-
-    def validate(self):
-        if self.type not in [TargetType.URL_ARXIV]:
-            raise NotImplementedError(f"{self.type.name} targets")
 
     def fetch_target(self):
         if self.type == TargetType.URL_ARXIV:
@@ -124,8 +118,14 @@ class Target:
                 # file does not exist, let's download it
                 download_file(url_pdf, dest)
 
-            self.fetched_path = dest
-            return dest
+            self.file_path = dest
+            return self.file_path
+
+        elif self.type == TargetType.LOCAL_FILE:
+            self.file_path = pathlib.Path(self.input)
+            u.logger.info(f"Will send a local file from {self.file_path}")
+            return self.file_path
+
         else:
             raise NotImplementedError(f"{self.type.name} targets")
 

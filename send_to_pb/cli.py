@@ -27,6 +27,6 @@ def send_to_pocketbook(location,  send_mail, pocketbook):
 
     if send_mail:
         Emailer().send_file(to=receiver,
-                            file=t.fetched_path,
+                            file=t.file_path,
                      )
 
